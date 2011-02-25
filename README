@@ -1,0 +1,14 @@
+This module is an attempt to add tools to Node for handling concurrency using
+multiple processes. It is inspired by Python's Multiprocessing library. 
+
+Current features:
+* It can fork, which means it can run on 2+ separate cores.
+
+More coming soon...
+
+TODO:
+
+* Figure out an IPC API
+* Figure out a standardized way of handling interrupts and events in sub processes
+* Figure out how to make this safe and fault tolerant 
+* Windows API, it currently is very unix. 
