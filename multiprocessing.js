@@ -1,12 +1,28 @@
 var mp_native = require('./build/default/multiprocessing.node');
 
+/* Multiprocessing object, represents a 2nd process.
+ */
 function mp(target) {
     this.target = target;
     this.args = arguments.slice(1);
     this.pid = -1;
     this.exitcode = -1; // Has not yet exited
+    
+    var internal = this._internal = new InternalChildProcess();
+    
+    var stdin = this.stdin = new Stream();
+    var stdout = this.stdout = new Stream();
+    var stderr = this.stderr = new Stream();
+    
+    var stderrClosed = false;
+    var stdoutClosed = false;
+    
+    stderr.addListener('close', function () {
+       stderrClosed = true; 
+    });
 }
 
+/* */
 mp.prototype.start = function () {
     this.pid = mp._fork();
     if (pid == 0) {
@@ -44,9 +60,8 @@ exports.WIFCONTINUED = mp_native.WIFCONTINUED;
 exports.WIFEXITED = mp_native.WIFEXITED;
 exports.WTERMSIG = mp_native.WTERMSIG;
 exports.WCOREDUMP = mp_native.WCOREDUMP;
-exports.sleep = function () {
-    
-}
+
+/* IO Multiplexing... Do I need this or can I pull it from the core of node-js? */
 exports.select = function () {
     
 }
